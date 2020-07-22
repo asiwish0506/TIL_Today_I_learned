@@ -1,0 +1,23 @@
+# 캐클 커널 'Predicting Credit Risk: EDA + Viz + Pipeline'
+
+# custom library import
+
+from viz_utils import *
+from ml_utils import *
+from custom_transformers import *
+
+# data overview하기
+
+df_overview = data_overview(df)
+df_overview
+
+# feature별 qtd_null(널 개수)	percent_null,	dtype, qtd_cat 등을 한 번에 보여줌
+
+# 수치형 변수에 대해 간단하게 lineplot과 박스plot을 한 번에 그려줌
+numplot_analysis(df[num_cols], hue='risk', color_hue=color_list)
+
+cat_features = [col for col, dtype in df.dtypes.items() if dtype == 'object']
+catplot_analysis(df[cat_features], palette='plasma')
+
+catplot_percentage_analysis(df[cat_features], hue='risk', palette=rev_color_list)
+
