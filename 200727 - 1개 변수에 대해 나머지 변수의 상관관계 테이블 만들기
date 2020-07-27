@@ -1,0 +1,4 @@
+corr_new_train=train.corr()
+plt.figure(figsize=(5,15))
+sns.heatmap(corr_new_train[['타겟']].sort_values(by=['타겟'],ascending=False).head(30),annot_kws={"size": 16},vmin=-1, cmap='PiYG', annot=True)
+sns.set(font_scale=2)
