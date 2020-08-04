@@ -1,0 +1,18 @@
+# 범주형 변수를 one-hot encoding할 때, trian set과 test set의 범주 값이 다른 경우 제대로 진행되지 않는다.
+# 특히 data leakage를 방지하기 위해 train set에만 인코더를 훈련시키고 이를 test set에 적용하여 transform이 불가하다. 
+# 이를 예방하기 위해서는, 전체 세트를 기준으로 dtype을 category로 만든 후 범주를 저장하고,
+# 이 범주들을 기반으로 one-hot-encoding을 진행하면 된다.
+
+full = pd.concat([train_full[cat_col], test[cat_col]])
+
+for col_name, col in full.items():
+    if is_string_dtype(col): full[col_name] = col.astype('category').cat.as_ordered()
+        
+for n,c in X_train.items():
+    if (n in full.columns) and (full[n].dtype.name=='category'): X_train[n] = pd.Categorical(c, categories=full[n].cat.categories, ordered=True)
+        
+for n,c in X_test.items():
+    if (n in full.columns) and (full[n].dtype.name=='category'): X_test[n] = pd.Categorical(c, categories=full[n].cat.categories, ordered=True)
+        
+for n,c in test.items():
+    if (n in full.columns) and (full[n].dtype.name=='category'): test[n] = pd.Categorical(c, categories=full[n].cat.categories, ordered=True)
